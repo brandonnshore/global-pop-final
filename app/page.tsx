@@ -5,6 +5,8 @@ import MenuBar from "@/components/MenuBar";
 import Desktop from "@/components/Desktop";
 import Window from "@/components/Window";
 import BootScreen from "@/components/BootScreen";
+import BeatBuilder from "@/components/BeatBuilder";
+import ExchangeOrExploitation from "@/components/ExchangeOrExploitation";
 
 export type DesktopItem = {
   id: string;
@@ -355,6 +357,55 @@ export default function Home() {
                   <p><span className="font-bold">Connection to "Hip-Hop Pedagogy":</span> Discusses the positive side—sampling as beneficial for producers and the world.</p>
                   <p className="mt-4 italic bg-black text-white p-2">Overall argument: Kanye stands at the crossroads between celebrating creativity and producing the same exploitative issues we've seen for decades.</p>
                 </div>
+              </div>
+            </div>
+          </div>
+        ),
+      },
+      // New interactive sections (grey folders)
+      {
+        id: "test-beat-builder",
+        name: "test Beat Builder",
+        type: "folder",
+        x: 20,
+        y: 180,
+        content: <BeatBuilder />,
+      },
+      {
+        id: "test-slider",
+        name: "test Slider",
+        type: "folder",
+        x: 20,
+        y: 310,
+        content: <ExchangeOrExploitation />,
+      },
+      {
+        id: "test-storytelling",
+        name: "test Storytelling",
+        type: "folder",
+        x: 20,
+        y: 440,
+        content: (
+          <div className="p-8 max-w-4xl bg-white">
+            <div className="mb-8">
+              <h1 className="text-4xl font-bold mb-4">How Sampling Constructs Narrative in the Work of Kanye West</h1>
+              <p className="text-sm text-gray-600 italic">Burns, Woods, and Lafrance | Sampling and Storytelling</p>
+            </div>
+
+            <div className="space-y-6 text-base leading-relaxed">
+              <p>Burns, Woods, and Lafrance argue that sampling in Kanye West's music is not simply a production technique. It functions as a core narrative device that shapes how his songs communicate themes like race, fame, class, and the emotional pressure of celebrity. Their study places him within the tradition of the singer songwriter, a category usually tied to acoustic introspection, but they show that Kanye occupies this role through the manipulation of recorded sound. They write that many hip hop artists build personal and social narratives through their music, and Kanye is one of the clearest examples of how sonic manipulation becomes a form of authorship.</p>
+
+              <p>In their analysis of tracks such as Diamonds from Sierra Leone, the authors show how Kanye uses the Shirley Bassey sample to create a musical dialogue between the sound of luxury and the critique of materialism. When he places Bassey's voice against lyrics about inequality and the blood diamond trade, the sample becomes a tool for reframing the meaning of the original recording. They explain that the sample creates a moment where glamour and violence coexist, revealing how narrative emerges not through melody alone but through juxtaposition.</p>
+
+              <p>Their reading of Welcome to Heartbreak highlights how Kanye uses vocal manipulation and sparse production to express emotional isolation. They show how Auto Tune becomes a narrative strategy that conveys distance and alienation, reinforcing the lyrical content about family, longing, and the cost of fame. Sampling and vocal processing work together to create what they call an intimate space inside a commercial soundscape.</p>
+
+              <p>In Black Skinhead they argue that Kanye expands hip hop by merging industrial rock textures, aggressive rhythmic breathing, and manipulated vocal intensity to tell a story about racial anxiety and the way Black masculinity is consumed and distorted by mainstream culture. The sample selection and sonic treatment become a form of cultural commentary. The track pushes listeners into discomfort while still operating inside a commercial album.</p>
+
+              <p>Burns, Woods, and Lafrance conclude that Kanye's sampling and sonic design allow him to engage with larger political questions through personal narrative. His manipulation of samples becomes a way of writing himself into conversations about race, equality, and cultural power. As they note, he consistently focuses on themes of race, gender, class, fame, and consumer culture, and his sampling choices are central to how those themes take shape.</p>
+
+              <div className="mt-8 p-6 bg-gray-100 border-l-4 border-black">
+                <p className="font-bold mb-2">Foundation for Global Sampling Analysis</p>
+                <p className="text-sm">This source establishes the foundation for understanding Kanye's global sampling as something more layered than simple borrowing. It frames sampling as a genuine narrative tool that allows him to transform global sounds into personal storytelling. This becomes the baseline for all the other perspectives in your project.</p>
               </div>
             </div>
           </div>
