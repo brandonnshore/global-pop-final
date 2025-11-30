@@ -22,6 +22,9 @@ const config: Config = {
         'retro-green': '#66ff99',
         'retro-orange': '#ff9966',
       },
+      borderWidth: {
+        '3': '3px',
+      },
     },
   },
   plugins: [],

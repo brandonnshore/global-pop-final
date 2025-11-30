@@ -18,8 +18,8 @@ export default function Window({
   onClose,
   initialX = 100,
   initialY = 100,
-  width = 500,
-  height = 400,
+  width = 1000,
+  height = 700,
 }: WindowProps) {
   const [position, setPosition] = useState({ x: initialX, y: initialY });
   const [size, setSize] = useState({ width, height });

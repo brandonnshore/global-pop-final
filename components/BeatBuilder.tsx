@@ -22,10 +22,18 @@ const AVAILABLE_BLOCKS: Block[] = [
   { id: "texture", type: "texture", label: "Texture Layer" },
 ];
 
+// Color mapping for block types - RETRO MAC PURPLE PALETTE
+const BLOCK_COLORS: Record<BlockType, string> = {
+  drum: "#8B7BA8",      // Desaturated purple
+  sample: "#9F8BB3",    // Lighter retro purple
+  bass: "#6B5B7D",      // Deeper retro purple
+  vocal: "#7D6D93",     // Muted purple
+  texture: "#AE9DC4",   // Soft retro purple
+};
+
 export default function BeatBuilder() {
   const [placedBlocks, setPlacedBlocks] = useState<PlacedBlock[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [showExplanation, setShowExplanation] = useState(false);
   const audioContextRef = useRef<AudioContext | null>(null);
   const schedulerRef = useRef<number | null>(null);
 
@@ -200,119 +208,244 @@ export default function BeatBuilder() {
   };
 
   return (
-    <div className="p-8 max-w-5xl bg-black text-white min-h-screen">
-      {/* Intro */}
-      <div className="mb-8 p-6 bg-white text-black">
-        <p className="text-sm leading-relaxed">
-          Producers do not just borrow sounds. They break them apart, study their shape, and rebuild them into something new. Mike Exarchos describes this as reverse engineering. This game lets you experiment with that process and see how a beat takes shape when you mix and match layers.
-        </p>
-      </div>
-
-      {/* Available Blocks */}
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold mb-4">SAMPLE BLOCKS</h2>
-        <div className="grid grid-cols-5 gap-4">
-          {AVAILABLE_BLOCKS.map((block) => (
-            <div
-              key={block.id}
-              className="bg-white text-black p-4 text-center font-bold text-sm border-4 border-white hover:bg-gray-200 cursor-move"
-              draggable
-              onDragStart={(e) => {
-                e.dataTransfer.setData("blockType", block.type);
-                e.dataTransfer.setData("blockId", block.id);
-                e.dataTransfer.setData("blockLabel", block.label);
-              }}
-            >
-              {block.label}
+    <div className="min-h-screen bg-[#e8e0d0] py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto">
+        {/* Intro Card - VINTAGE MAC WINDOW */}
+        <div className="mb-12 bg-[#f5f1e8] border-3 border-black overflow-hidden" style={{ boxShadow: '4px 4px 0 rgba(0,0,0,0.3)' }}>
+          {/* Window Title Bar */}
+          <div className="bg-[#d4d0c8] border-b-3 border-black p-2 flex items-center gap-2">
+            <div className="flex gap-1.5">
+              <div className="w-3 h-3 border-2 border-black bg-white"></div>
+              <div className="w-3 h-3 border-2 border-black bg-white"></div>
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Timeline */}
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold mb-4">TIMELINE</h2>
-        <div className="flex gap-2">
-          {[0, 1, 2, 3].map((position) => {
-            const placedBlock = placedBlocks.find((b) => b.position === position);
-            return (
-              <div
-                key={position}
-                className="flex-1 h-32 border-4 border-white bg-black flex items-center justify-center relative"
-                onDragOver={(e) => e.preventDefault()}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  const type = e.dataTransfer.getData("blockType") as BlockType;
-                  const id = e.dataTransfer.getData("blockId");
-                  const label = e.dataTransfer.getData("blockLabel");
-                  addBlock({ id, type, label }, position);
-                }}
-              >
-                {placedBlock ? (
-                  <div className="bg-white text-black p-4 w-full h-full flex flex-col items-center justify-center">
-                    <p className="font-bold text-xs mb-2">{placedBlock.label}</p>
-                    <button
-                      onClick={() => removeBlock(position)}
-                      className="bg-black text-white px-2 py-1 text-xs"
-                    >
-                      REMOVE
-                    </button>
-                  </div>
-                ) : (
-                  <p className="text-gray-500 text-sm">Drop here</p>
-                )}
-                <div className="absolute bottom-1 left-1 text-xs text-gray-500">
-                  {position + 1}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Controls */}
-      <div className="mb-8 flex gap-4">
-        <button
-          onClick={togglePlayback}
-          disabled={placedBlocks.length === 0}
-          className="bg-white text-black px-8 py-4 font-bold text-lg disabled:bg-gray-600 disabled:text-gray-400"
-        >
-          {isPlaying ? "STOP" : "PLAY"}
-        </button>
-        <button
-          onClick={() => setPlacedBlocks([])}
-          className="bg-gray-700 text-white px-8 py-4 font-bold text-lg"
-        >
-          CLEAR
-        </button>
-        <button
-          onClick={() => setShowExplanation(!showExplanation)}
-          className="bg-gray-700 text-white px-8 py-4 font-bold text-lg"
-        >
-          {showExplanation ? "HIDE" : "SHOW"} EXPLANATION
-        </button>
-      </div>
-
-      {/* Explanation */}
-      {showExplanation && (
-        <div className="bg-white text-black p-6">
-          <h3 className="text-xl font-bold mb-4">REVERSE ENGINEERING IN HIP-HOP PRODUCTION</h3>
-          <div className="space-y-4 text-sm leading-relaxed">
-            <p>
-              This interactive experience simulates what Mike Exarchos calls reverse engineering in hip-hop production. When producers sample, they are not simply copying existing music—they are breaking it apart to understand its construction, then rebuilding those fragments into entirely new cultural statements.
+            <div className="flex-1 text-center">
+              <span className="text-sm font-bold text-black">Beat Builder</span>
+            </div>
+          </div>
+          <div className="p-8 sm:p-10 border-2 border-black border-t-0" style={{ boxShadow: 'inset 2px 2px 4px rgba(0,0,0,0.1)' }}>
+            <div className="flex items-center mb-4">
+              <div className="w-1.5 h-8 bg-[#8B7BA8] border border-black mr-4"></div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-black">Beat Builder</h1>
+            </div>
+            <p className="text-base sm:text-lg leading-relaxed text-black font-normal mb-4">
+              Producers do not just borrow sounds. They break them apart, study their shape, and rebuild them into something new. Mike Exarchos describes this as reverse engineering. This game lets you experiment with that process and see how a beat takes shape when you mix and match layers. (Hint: You have to press stop and play again when you add a new sample block)
             </p>
-            <p>
-              Exarchos describes sampling as a rich matrix of creative methods that includes not just the act of borrowing sound, but synthesis, programming, mixing, and mastering. This process trains producers to listen critically and understand how earlier music was constructed, turning sampling into both a technical skill and a form of musical education.
-            </p>
-            <p>
-              What you just experienced—arranging blocks to create a beat—mirrors how producers like Kanye West manipulate fragments from global sources. Each sample becomes a layer of personal meaning. When Kanye chops a Kenyan folk song or layers a soul sample with industrial drums, he is reverse engineering those sounds, studying their emotional weight, and rebuilding them into his own narrative about fame, race, and power.
-            </p>
-            <p className="font-bold">
-              The process you engaged with here demonstrates that sampling is not theft. It is a sophisticated form of authorship that requires years of practice, deep listening, and creative vision.
+            <p className="text-xs text-gray-600 italic">
+              Citation: Exarchos (A.K.A. Stereo Mike), Michail. "Hip-hop Pedagogy as Production Practice: Reverse Engineering the Sample Based Aesthetic." Journal of Popular Music Education, vol. 2, no. 1, 1 Aug. 2018, pp. 45–63, https://doi.org/10.1386/jpme.2.1-2.45_1.
             </p>
           </div>
         </div>
-      )}
+
+        {/* Available Blocks - VINTAGE MAC STYLE */}
+        <div className="mb-12">
+          <h2 className="text-xl font-bold text-black mb-6 px-1">Sample Blocks</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+            {AVAILABLE_BLOCKS.map((block) => (
+              <div
+                key={block.id}
+                className="
+                  border-3 border-black text-white p-6 text-center font-bold text-sm
+                  cursor-move select-none
+                  transition-all duration-100
+                "
+                style={{
+                  backgroundColor: BLOCK_COLORS[block.type],
+                  boxShadow: '3px 3px 0 rgba(0,0,0,0.4), inset -1px -1px 0 rgba(0,0,0,0.2), inset 1px 1px 0 rgba(255,255,255,0.3)',
+                }}
+                draggable
+                onDragStart={(e) => {
+                  e.dataTransfer.setData("blockType", block.type);
+                  e.dataTransfer.setData("blockId", block.id);
+                  e.dataTransfer.setData("blockLabel", block.label);
+                }}
+                onMouseDown={(e) => {
+                  e.currentTarget.style.boxShadow = 'inset 2px 2px 4px rgba(0,0,0,0.4)';
+                }}
+                onMouseUp={(e) => {
+                  e.currentTarget.style.boxShadow = '3px 3px 0 rgba(0,0,0,0.4), inset -1px -1px 0 rgba(0,0,0,0.2), inset 1px 1px 0 rgba(255,255,255,0.3)';
+                }}
+              >
+                <div className="flex flex-col items-center justify-center h-full">
+                  <span className="text-base drop-shadow-sm">{block.label}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Timeline - VINTAGE MAC STYLE */}
+        <div className="mb-12">
+          <h2 className="text-xl font-bold text-black mb-6 px-1">Timeline</h2>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {[0, 1, 2, 3].map((position) => {
+              const placedBlock = placedBlocks.find((b) => b.position === position);
+              return (
+                <div
+                  key={position}
+                  className={`
+                    relative h-40 border-3 border-black transition-all duration-200
+                    ${placedBlock
+                      ? 'bg-[#f5f1e8]'
+                      : 'bg-white'
+                    }
+                  `}
+                  style={{
+                    boxShadow: placedBlock
+                      ? 'inset 3px 3px 6px rgba(0,0,0,0.2)'
+                      : 'inset 2px 2px 4px rgba(0,0,0,0.15), 2px 2px 0 rgba(0,0,0,0.2)',
+                  }}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    const type = e.dataTransfer.getData("blockType") as BlockType;
+                    const id = e.dataTransfer.getData("blockId");
+                    const label = e.dataTransfer.getData("blockLabel");
+                    addBlock({ id, type, label }, position);
+                  }}
+                >
+                  {placedBlock ? (
+                    <div className="p-4 h-full flex flex-col items-center justify-center">
+                      <div
+                        className="w-full border-2 border-black p-4 mb-3 text-center"
+                        style={{
+                          backgroundColor: BLOCK_COLORS[placedBlock.type],
+                          boxShadow: '2px 2px 0 rgba(0,0,0,0.3), inset -1px -1px 0 rgba(0,0,0,0.2), inset 1px 1px 0 rgba(255,255,255,0.3)',
+                        }}
+                      >
+                        <p className="font-bold text-sm text-white drop-shadow-sm">{placedBlock.label}</p>
+                      </div>
+                      <button
+                        onClick={() => removeBlock(position)}
+                        className="
+                          px-4 py-2 text-xs font-bold text-black
+                          bg-[#d4d0c8] border-2 border-black
+                          transition-all duration-100
+                        "
+                        style={{
+                          boxShadow: '2px 2px 0 rgba(0,0,0,0.3), inset -1px -1px 0 rgba(0,0,0,0.1), inset 1px 1px 0 rgba(255,255,255,0.5)',
+                        }}
+                        onMouseDown={(e) => {
+                          e.currentTarget.style.boxShadow = 'inset 2px 2px 3px rgba(0,0,0,0.3)';
+                        }}
+                        onMouseUp={(e) => {
+                          e.currentTarget.style.boxShadow = '2px 2px 0 rgba(0,0,0,0.3), inset -1px -1px 0 rgba(0,0,0,0.1), inset 1px 1px 0 rgba(255,255,255,0.5)';
+                        }}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="h-full flex items-center justify-center">
+                      <p className="text-black text-sm font-bold opacity-40">Drop here</p>
+                    </div>
+                  )}
+                  <div className="absolute bottom-2 left-2">
+                    <span className="
+                      inline-flex items-center justify-center
+                      w-6 h-6 border-2 border-black bg-white
+                      text-xs font-bold text-black
+                    "
+                      style={{
+                        boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)',
+                      }}
+                    >
+                      {position + 1}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Controls - VINTAGE MAC BUTTONS */}
+        <div className="mb-12 flex flex-wrap gap-4">
+          <button
+            onClick={togglePlayback}
+            disabled={placedBlocks.length === 0}
+            className={`
+              px-8 py-4 font-bold text-base border-3 border-black
+              transition-all duration-100
+              ${placedBlocks.length === 0
+                ? 'bg-[#c0c0c0] text-gray-500 cursor-not-allowed opacity-50'
+                : ''
+              }
+            `}
+            style={placedBlocks.length > 0 ? {
+              backgroundColor: isPlaying ? '#c85a54' : '#8B7BA8',
+              color: 'white',
+              boxShadow: '3px 3px 0 rgba(0,0,0,0.4), inset -1px -1px 0 rgba(0,0,0,0.2), inset 1px 1px 0 rgba(255,255,255,0.3)',
+            } : {
+              boxShadow: 'inset 2px 2px 4px rgba(0,0,0,0.2)',
+            }}
+            onMouseDown={(e) => {
+              if (placedBlocks.length > 0) {
+                e.currentTarget.style.boxShadow = 'inset 2px 2px 4px rgba(0,0,0,0.4)';
+              }
+            }}
+            onMouseUp={(e) => {
+              if (placedBlocks.length > 0) {
+                e.currentTarget.style.boxShadow = '3px 3px 0 rgba(0,0,0,0.4), inset -1px -1px 0 rgba(0,0,0,0.2), inset 1px 1px 0 rgba(255,255,255,0.3)';
+              }
+            }}
+          >
+            {isPlaying ? (
+              <span className="flex items-center gap-2">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <rect x="5" y="4" width="3" height="12" />
+                  <rect x="12" y="4" width="3" height="12" />
+                </svg>
+                Stop
+              </span>
+            ) : (
+              <span className="flex items-center gap-2">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M6 4.5l8.5 5.2c.3.2.3.6 0 .8L6 15.7c-.5.3-1-.1-1-.6V5.1c0-.5.5-.9 1-.6z" />
+                </svg>
+                Play
+              </span>
+            )}
+          </button>
+          <button
+            onClick={() => setPlacedBlocks([])}
+            className="
+              px-8 py-4 font-bold text-base
+              bg-[#d4d0c8] text-black border-3 border-black
+              transition-all duration-100
+            "
+            style={{
+              boxShadow: '3px 3px 0 rgba(0,0,0,0.4), inset -1px -1px 0 rgba(0,0,0,0.1), inset 1px 1px 0 rgba(255,255,255,0.5)',
+            }}
+            onMouseDown={(e) => {
+              e.currentTarget.style.boxShadow = 'inset 2px 2px 4px rgba(0,0,0,0.3)';
+            }}
+            onMouseUp={(e) => {
+              e.currentTarget.style.boxShadow = '3px 3px 0 rgba(0,0,0,0.4), inset -1px -1px 0 rgba(0,0,0,0.1), inset 1px 1px 0 rgba(255,255,255,0.5)';
+            }}
+          >
+            Clear
+          </button>
+        </div>
+
+        {/* Narration Section */}
+        <div className="bg-[#3d3d3d] border-3 border-black p-6 text-white" style={{ boxShadow: '6px 6px 0 rgba(0,0,0,0.4)' }}>
+          <div className="inline-block px-3 py-1 bg-[#8B7BA8] border-2 border-black mb-4">
+            <span className="text-xs font-bold text-black tracking-wider">
+              NARRATION
+            </span>
+          </div>
+          <div className="border-2 border-black p-2 bg-[#2d2d2d]" style={{ boxShadow: 'inset 1px 1px 0 rgba(0,0,0,0.3)' }}>
+            <audio
+              controls
+              className="w-full h-10"
+              aria-label="Play section 2 narration"
+            >
+              <source src="/section2_narration.mp3" type="audio/mpeg" />
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

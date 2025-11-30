@@ -51,8 +51,20 @@ export default function DesktopIcon({ item, onDoubleClick, onPositionChange }: D
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (isDragging) {
-        const newX = e.clientX - dragOffset.x;
-        const newY = e.clientY - dragOffset.y;
+        let newX = e.clientX - dragOffset.x;
+        let newY = e.clientY - dragOffset.y;
+
+        // Constrain to viewport - prevent dragging past menu bar and screen edges
+        const menuBarHeight = 32; // Height of the menu bar at top
+        const iconWidth = 120; // Approximate icon width including label
+        const iconHeight = 100; // Approximate icon height including label
+
+        // Constrain X within screen bounds
+        newX = Math.max(0, Math.min(newX, window.innerWidth - iconWidth));
+
+        // Constrain Y - keep below menu bar and above bottom
+        newY = Math.max(menuBarHeight, Math.min(newY, window.innerHeight - iconHeight));
+
         onPositionChange(item.id, newX, newY);
       }
     };
@@ -81,7 +93,12 @@ export default function DesktopIcon({ item, onDoubleClick, onPositionChange }: D
       "legal-blues": "#8FBB74",             // Green
       "kothbiro-sample": "#519FB0",         // Blue/Teal
       "sweet-lullaby": "#F4A755",           // Orange
-      "trash": "#F4A755",                   // Orange
+      "trash": "#D1D5DB",                   // Gray
+      "section1-record-room": "#E06C79",    // Pink/Coral (matches Record Room UI)
+      "section2-beat-builder": "#A78BFA",   // Purple (matches Beat Builder UI)
+      "section3-slider": "#F472B6",         // Rose/Pink (matches Slider UI)
+      "section4-map-journey": "#22D3EE",    // Cyan (matches Section 4 UI)
+      "section6-kothbiro-case": "#8b7355",  // Brown/Tan (matches case file folder tab)
     };
     return colorMap[item.id] || "#f5f1e8";
   };
