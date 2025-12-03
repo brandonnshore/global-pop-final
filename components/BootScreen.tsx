@@ -39,7 +39,7 @@ export default function BootScreen({ onComplete }: BootScreenProps) {
       clearInterval(progressInterval);
       clearInterval(messageInterval);
     };
-  }, [onComplete]);
+  }, [onComplete, bootMessages.length]);
 
   return (
     <div className="fixed inset-0 bg-[#f5f1e8] flex items-center justify-center z-50">

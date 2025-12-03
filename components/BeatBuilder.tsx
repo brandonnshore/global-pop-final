@@ -231,7 +231,7 @@ export default function BeatBuilder() {
               Producers do not just borrow sounds. They break them apart, study their shape, and rebuild them into something new. Mike Exarchos describes this as reverse engineering. This game lets you experiment with that process and see how a beat takes shape when you mix and match layers. (Hint: You have to press stop and play again when you add a new sample block)
             </p>
             <p className="text-xs text-gray-600 italic">
-              Citation: Exarchos (A.K.A. Stereo Mike), Michail. "Hip-hop Pedagogy as Production Practice: Reverse Engineering the Sample Based Aesthetic." Journal of Popular Music Education, vol. 2, no. 1, 1 Aug. 2018, pp. 45–63, https://doi.org/10.1386/jpme.2.1-2.45_1.
+              Citation: Exarchos (A.K.A. Stereo Mike), Michail. &ldquo;Hip-hop Pedagogy as Production Practice: Reverse Engineering the Sample Based Aesthetic.&rdquo; Journal of Popular Music Education, vol. 2, no. 1, 1 Aug. 2018, pp. 45–63, https://doi.org/10.1386/jpme.2.1-2.45_1.
             </p>
           </div>
         </div>
