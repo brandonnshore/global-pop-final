@@ -10,8 +10,7 @@ export default function SectionFiveVideo() {
         className="w-full"
         style={{ maxHeight: '80vh' }}
       >
-        <source src="/section5/video.mov" type="video/quicktime" />
-        <source src="/section5/video.mov" type="video/mp4" />
+        <source src="/section5/video.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
     </div>
