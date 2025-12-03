@@ -58,48 +58,60 @@ export default function SectionSixCaseFile() {
                    minHeight: '700px'
                  }}>
 
-              {/* Tab Navigation */}
-              <div className="flex gap-1 mb-6">
-                {/* Evidence 1 Tab */}
-                <button
-                  onClick={() => setCurrentEvidence(1)}
-                  className={`px-6 py-3 border-3 border-black font-bold text-sm transition-all ${
-                    currentEvidence === 1
-                      ? 'bg-white border-b-0 translate-y-[3px] z-10'
-                      : 'bg-[#d4d0c8] hover:bg-[#e0dcd0]'
-                  }`}
-                  style={currentEvidence === 1 ? {} : { boxShadow: 'inset 0px 2px 3px rgba(0,0,0,0.2)' }}
-                >
-                  <span className="text-red-600 mr-2">■</span>
-                  EVIDENCE 1
-                </button>
+              {/* Tab Navigation with Next Button */}
+              <div className="flex justify-between items-center mb-6">
+                {/* Evidence Tabs */}
+                <div className="flex gap-1">
+                  {/* Evidence 1 Tab */}
+                  <button
+                    onClick={() => setCurrentEvidence(1)}
+                    className={`px-6 py-3 border-3 border-black font-bold text-sm transition-all ${
+                      currentEvidence === 1
+                        ? 'bg-white border-b-0 translate-y-[3px] z-10'
+                        : 'bg-[#d4d0c8] hover:bg-[#e0dcd0]'
+                    }`}
+                    style={currentEvidence === 1 ? {} : { boxShadow: 'inset 0px 2px 3px rgba(0,0,0,0.2)' }}
+                  >
+                    <span className="text-red-600 mr-2">■</span>
+                    EVIDENCE 1
+                  </button>
 
-                {/* Evidence 2 Tab */}
-                <button
-                  onClick={() => setCurrentEvidence(2)}
-                  className={`px-6 py-3 border-3 border-black font-bold text-sm transition-all ${
-                    currentEvidence === 2
-                      ? 'bg-white border-b-0 translate-y-[3px] z-10'
-                      : 'bg-[#d4d0c8] hover:bg-[#e0dcd0]'
-                  }`}
-                  style={currentEvidence === 2 ? {} : { boxShadow: 'inset 0px 2px 3px rgba(0,0,0,0.2)' }}
-                >
-                  <span className="text-red-600 mr-2">■</span>
-                  EVIDENCE 2
-                </button>
+                  {/* Evidence 2 Tab */}
+                  <button
+                    onClick={() => setCurrentEvidence(2)}
+                    className={`px-6 py-3 border-3 border-black font-bold text-sm transition-all ${
+                      currentEvidence === 2
+                        ? 'bg-white border-b-0 translate-y-[3px] z-10'
+                        : 'bg-[#d4d0c8] hover:bg-[#e0dcd0]'
+                    }`}
+                    style={currentEvidence === 2 ? {} : { boxShadow: 'inset 0px 2px 3px rgba(0,0,0,0.2)' }}
+                  >
+                    <span className="text-red-600 mr-2">■</span>
+                    EVIDENCE 2
+                  </button>
 
-                {/* Evidence 3 Tab */}
+                  {/* Evidence 3 Tab */}
+                  <button
+                    onClick={() => setCurrentEvidence(3)}
+                    className={`px-6 py-3 border-3 border-black font-bold text-sm transition-all ${
+                      currentEvidence === 3
+                        ? 'bg-white border-b-0 translate-y-[3px] z-10'
+                        : 'bg-[#d4d0c8] hover:bg-[#e0dcd0]'
+                    }`}
+                    style={currentEvidence === 3 ? {} : { boxShadow: 'inset 0px 2px 3px rgba(0,0,0,0.2)' }}
+                  >
+                    <span className="text-red-600 mr-2">■</span>
+                    EVIDENCE 3
+                  </button>
+                </div>
+
+                {/* Next Button */}
                 <button
-                  onClick={() => setCurrentEvidence(3)}
-                  className={`px-6 py-3 border-3 border-black font-bold text-sm transition-all ${
-                    currentEvidence === 3
-                      ? 'bg-white border-b-0 translate-y-[3px] z-10'
-                      : 'bg-[#d4d0c8] hover:bg-[#e0dcd0]'
-                  }`}
-                  style={currentEvidence === 3 ? {} : { boxShadow: 'inset 0px 2px 3px rgba(0,0,0,0.2)' }}
+                  onClick={() => setCurrentEvidence(currentEvidence === 3 ? 1 : currentEvidence + 1)}
+                  className="px-6 py-3 border-3 border-black font-bold text-sm text-white hover:opacity-90 active:translate-y-[2px] transition-all"
+                  style={{ backgroundColor: '#DC2626', boxShadow: '4px 4px 0px rgba(0,0,0,0.3)' }}
                 >
-                  <span className="text-red-600 mr-2">■</span>
-                  EVIDENCE 3
+                  NEXT →
                 </button>
               </div>
 

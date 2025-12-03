@@ -12,11 +12,11 @@ export default function BootScreen({ onComplete }: BootScreenProps) {
 
   const bootMessages = [
     "Loading System 7.5.5...",
-    "Initializing KANYE 2049 OS...",
+    "Initializing Kanye Global Pop OS...",
     "Loading desktop patterns...",
     "Mounting volumes...",
     "Starting Finder...",
-    "Welcome to the future of pop culture.",
+    "Welcome to global pop culture.",
   ];
 
   useEffect(() => {
@@ -46,9 +46,9 @@ export default function BootScreen({ onComplete }: BootScreenProps) {
       <div className="text-center">
         <div className="mb-8">
           <div className="text-black text-6xl font-bold mb-4">
-            KANYE 2049
+            KANYE GLOBAL POP
           </div>
-          <div className="text-black text-xl">GLOBAL POP OS</div>
+          <div className="text-black text-xl">OS</div>
         </div>
 
         <div className="w-96 mx-auto">

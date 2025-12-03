@@ -16,21 +16,21 @@ const lives: Life[] = [
     label: 'Origin',
     title: 'Origin: Local Lullaby',
     description: 'In 1970, ethnomusicologist Hugo Zemp recorded "Rorogwela," a traditional lullaby sung by Afunakwa, a woman from the Solomon Islands. This intimate recording captured a mother\'s song, deeply rooted in local culture and community.',
-    position: { x: 82, y: 62 }, // Solomon Islands (Pacific, east of Australia)
+    position: { x: 91, y: 57 }, // Solomon Islands (Pacific, east of Papua New Guinea)
   },
   {
     id: 2,
     label: 'Remix Studio',
     title: 'Remix: Sweet Lullaby',
     description: 'In 1992, French musical duo Deep Forest sampled Afunakwa\'s voice without permission, layering it over electronic beats to create "Sweet Lullaby." The track became a global hit, and Afunakwa the original singer received no credit, compensation, or say in how her voice was used.',
-    position: { x: 48, y: 32 }, // France (Western Europe)
+    position: { x: 49, y: 30 }, // Paris, France
   },
   {
     id: 3,
     label: 'Global Market',
     title: 'Aftermath: Who Benefits',
     description: 'The song entered global circulation. Once a Lullaby recorded to merely preserve a sound, now stolen from its creator and endlessly circulated',
-    position: { x: 25, y: 35 }, // New York/North America (Global music industry hub)
+    position: { x: 22, y: 32 }, // Center of USA - moved up 1 grid square
   },
 ];
 
@@ -40,9 +40,29 @@ export default function SectionFourMapJourney() {
   const [narrationDuration, setNarrationDuration] = useState(0);
   const [isNarrationPlaying, setIsNarrationPlaying] = useState(false);
 
+  const songRef = useRef<HTMLAudioElement>(null);
   const narrationRef = useRef<HTMLAudioElement>(null);
 
   const currentLifeData = lives.find(life => life.id === currentLife) || lives[0];
+
+  // Stop all audio when switching between lives
+  useEffect(() => {
+    // Stop and reset song audio
+    if (songRef.current) {
+      songRef.current.pause();
+      songRef.current.currentTime = 0;
+      songRef.current.load(); // Force reload to prevent stickiness
+    }
+
+    // Stop and reset narration audio
+    if (narrationRef.current) {
+      narrationRef.current.pause();
+      narrationRef.current.currentTime = 0;
+      narrationRef.current.load(); // Force reload to prevent stickiness
+    }
+
+    setIsNarrationPlaying(false);
+  }, [currentLife]); // Run whenever currentLife changes
 
   const handleNext = () => {
     if (currentLife < 3) {
@@ -141,7 +161,7 @@ export default function SectionFourMapJourney() {
               className="absolute inset-0 w-full h-full object-cover opacity-90"
             />
 
-            {/* Location Markers */}
+            {/* Location Markers - Show all locations */}
             {lives.map((life) => (
               <div
                 key={life.id}
@@ -153,17 +173,16 @@ export default function SectionFourMapJourney() {
                 }}
               >
                 {/* Marker Pin */}
-                <div className={`flex flex-col items-center transition-all duration-500 ${
-                  currentLife === life.id ? 'opacity-100 scale-100' : 'opacity-50 scale-90'
+                <div className={`transition-all duration-500 ${
+                  currentLife === life.id ? 'opacity-100 scale-110' : 'opacity-60 scale-90'
                 }`}>
-                  <div className={`w-10 h-10 border-3 border-black flex items-center justify-center ${
+                  <div className={`w-6 h-6 border-2 border-black ${
                     currentLife === life.id
                       ? 'bg-[#5b9aa9]'
                       : 'bg-[#c0c0c0]'
                   } transition-all duration-500`} style={{ boxShadow: currentLife === life.id ? 'inset -2px -2px 0 rgba(0,0,0,0.4), inset 2px 2px 0 rgba(255,255,255,0.6), 0 4px 8px rgba(0,0,0,0.3)' : '2px 2px 0 rgba(0,0,0,0.2)' }}>
-                    <div className="w-3 h-3 bg-black"></div>
                   </div>
-                  <div className={`mt-2 text-xs font-bold whitespace-nowrap px-2 py-1 border-2 border-black ${
+                  <div className={`absolute top-full left-1/2 transform -translate-x-1/2 mt-2 text-xs font-bold whitespace-nowrap px-2 py-1 border-2 border-black ${
                     currentLife === life.id
                       ? 'bg-[#5b9aa9] text-black'
                       : 'bg-white text-black'
@@ -176,7 +195,7 @@ export default function SectionFourMapJourney() {
 
             {/* Animated Plane */}
             <div
-              className="absolute transition-all duration-1000 ease-in-out text-5xl drop-shadow-2xl"
+              className="absolute transition-all duration-1000 ease-in-out text-4xl drop-shadow-2xl"
               style={{
                 left: `${currentLifeData.position.x}%`,
                 top: `${currentLifeData.position.y}%`,
@@ -223,116 +242,82 @@ export default function SectionFourMapJourney() {
           </div>
         </div>
 
-        {/* Recording Players Section - Shows based on current life */}
+        {/* Audio Section */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-black mb-6 text-center bg-[#5b9aa9] border-3 border-black py-3" style={{ boxShadow: '4px 4px 0 rgba(0,0,0,0.3)' }}>
             Listen to Life {currentLife}
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Song Recording Card - Changes based on current life */}
-            <div className="bg-white border-3 border-black p-5" style={{ boxShadow: '6px 6px 0 rgba(0,0,0,0.2)' }}>
-              <div className="inline-block px-3 py-1 bg-[#5b9aa9] border-2 border-black mb-3">
-                <span className="text-xs font-bold text-black tracking-wider">
-                  SONG RECORDING
-                </span>
+          {/* Life 1 & 2: Two columns (Song + Narration) */}
+          {(currentLife === 1 || currentLife === 2) && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Song Recording Card */}
+              <div className="bg-white border-3 border-black p-5" style={{ boxShadow: '6px 6px 0 rgba(0,0,0,0.2)' }}>
+                <div className="inline-block px-3 py-1 bg-[#5b9aa9] border-2 border-black mb-3">
+                  <span className="text-xs font-bold text-black tracking-wider">
+                    SONG RECORDING
+                  </span>
+                </div>
+                <div className="border-2 border-black p-2 bg-[#e8e0d0] mt-3" style={{ boxShadow: 'inset 1px 1px 0 rgba(0,0,0,0.2)' }}>
+                  <audio
+                    key={`song-${currentLife}`}
+                    ref={songRef}
+                    controls
+                    className="w-full h-10"
+                    aria-label={`Play Life ${currentLife} song`}
+                  >
+                    <source src={`/section4/life${currentLife}_song.mp3`} type="audio/mpeg" />
+                    Your browser does not support the audio element.
+                  </audio>
+                </div>
               </div>
-              {currentLife === 1 && (
-                <>
-                  <div className="border-2 border-black p-2 bg-[#e8e0d0] mt-3" style={{ boxShadow: 'inset 1px 1px 0 rgba(0,0,0,0.2)' }}>
-                    <audio
-                      controls
-                      className="w-full h-10"
-                      aria-label="Play original lullaby recording"
-                    >
-                      <source src="/section4/life1_song.mp3" type="audio/mpeg" />
-                      Your browser does not support the audio element.
-                    </audio>
-                  </div>
-                </>
-              )}
-              {currentLife === 2 && (
-                <>
-                  <div className="border-2 border-black p-2 bg-[#e8e0d0] mt-3" style={{ boxShadow: 'inset 1px 1px 0 rgba(0,0,0,0.2)' }}>
-                    <audio
-                      controls
-                      className="w-full h-10"
-                      aria-label="Play remix version"
-                    >
-                      <source src="/section4/life2_song.mp3" type="audio/mpeg" />
-                      Your browser does not support the audio element.
-                    </audio>
-                  </div>
-                </>
-              )}
-              {currentLife === 3 && (
-                <>
-                  <div className="border-2 border-black p-2 bg-[#e8e0d0] mt-3" style={{ boxShadow: 'inset 1px 1px 0 rgba(0,0,0,0.2)' }}>
-                    <audio
-                      controls
-                      className="w-full h-10"
-                      aria-label="Play global product example"
-                    >
-                      <source src="/section4/life3_song.mp3" type="audio/mpeg" />
-                      Your browser does not support the audio element.
-                    </audio>
-                  </div>
-                </>
-              )}
-            </div>
 
-            {/* Narration Card - Changes based on current life */}
-            <div className="bg-[#3d3d3d] border-3 border-black p-5 text-white" style={{ boxShadow: '6px 6px 0 rgba(0,0,0,0.4)' }}>
-              <div className="inline-block px-3 py-1 bg-[#5b9aa9] border-2 border-black mb-3">
+              {/* Narration Card */}
+              <div className="bg-[#f5f1e8] border-3 border-black p-5" style={{ boxShadow: '6px 6px 0 rgba(0,0,0,0.4)' }}>
+                <div className="inline-block px-3 py-1 bg-[#5b9aa9] border-2 border-black mb-3">
+                  <span className="text-xs font-bold text-black tracking-wider">
+                    NARRATION
+                  </span>
+                </div>
+                <div className="border-2 border-black p-3 bg-white mt-3" style={{ boxShadow: '2px 2px 0 rgba(0,0,0,0.2)' }}>
+                  <audio
+                    key={`narration-${currentLife}`}
+                    ref={narrationRef}
+                    controls
+                    className="w-full h-10"
+                    aria-label={`Play Life ${currentLife} narration`}
+                  >
+                    <source src={`/section4/life${currentLife}_narration.${currentLife === 1 ? 'm4a' : 'mp3'}`} type={currentLife === 1 ? 'audio/mp4' : 'audio/mpeg'} />
+                    {currentLife === 1 && <source src="/section4/life1_narration.m4a" type="audio/x-m4a" />}
+                    Your browser does not support the audio element.
+                  </audio>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Life 3: Full Width (Narration Only) */}
+          {currentLife === 3 && (
+            <div className="bg-[#f5f1e8] border-3 border-black p-6" style={{ boxShadow: '6px 6px 0 rgba(0,0,0,0.4)' }}>
+              <div className="inline-block px-3 py-1 bg-[#5b9aa9] border-2 border-black mb-4">
                 <span className="text-xs font-bold text-black tracking-wider">
                   NARRATION
                 </span>
               </div>
-              {currentLife === 1 && (
-                <>
-                  <div className="border-2 border-black p-2 bg-[#2d2d2d] mt-3" style={{ boxShadow: 'inset 1px 1px 0 rgba(0,0,0,0.3)' }}>
-                    <audio
-                      controls
-                      className="w-full h-10"
-                      aria-label="Play Life 1 narration"
-                    >
-                      <source src="/section4/life1_narration.m4a" type="audio/mp4" />
-                      <source src="/section4/life1_narration.m4a" type="audio/x-m4a" />
-                      Your browser does not support the audio element.
-                    </audio>
-                  </div>
-                </>
-              )}
-              {currentLife === 2 && (
-                <>
-                  <div className="border-2 border-black p-2 bg-[#2d2d2d] mt-3" style={{ boxShadow: 'inset 1px 1px 0 rgba(0,0,0,0.3)' }}>
-                    <audio
-                      controls
-                      className="w-full h-10"
-                      aria-label="Play Life 2 narration"
-                    >
-                      <source src="/section4/life2_narration.mp3" type="audio/mpeg" />
-                      Your browser does not support the audio element.
-                    </audio>
-                  </div>
-                </>
-              )}
-              {currentLife === 3 && (
-                <>
-                  <div className="border-2 border-black p-2 bg-[#2d2d2d] mt-3" style={{ boxShadow: 'inset 1px 1px 0 rgba(0,0,0,0.3)' }}>
-                    <audio
-                      controls
-                      className="w-full h-10"
-                      aria-label="Play Life 3 narration"
-                    >
-                      <source src="/section4/life3_narration.mp3" type="audio/mpeg" />
-                      Your browser does not support the audio element.
-                    </audio>
-                  </div>
-                </>
-              )}
+              <div className="border-2 border-black p-4 bg-white mt-3" style={{ boxShadow: '2px 2px 0 rgba(0,0,0,0.2)' }}>
+                <audio
+                  key="narration-3"
+                  ref={narrationRef}
+                  controls
+                  className="w-full h-12"
+                  aria-label="Play Life 3 narration"
+                >
+                  <source src="/section4/life3_narration.mp3" type="audio/mpeg" />
+                  Your browser does not support the audio element.
+                </audio>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
       </div>

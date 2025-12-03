@@ -8,8 +8,10 @@ import BootScreen from "@/components/BootScreen";
 import BeatBuilder from "@/components/BeatBuilder";
 import ExchangeOrExploitation from "@/components/ExchangeOrExploitation";
 import SectionFourMapJourney from "@/section4/SectionFourMapJourney";
+import SectionFiveVideo from "@/section5/SectionFiveVideo";
 import SectionSixCaseFile from "@/section6/SectionSixCaseFile";
 import SectionOneRecordRoom from "@/section1/SectionOneRecordRoom";
+import PlayMeWelcome from "@/components/PlayMeWelcome";
 
 export type DesktopItem = {
   id: string;
@@ -34,45 +36,62 @@ export default function Home() {
 
 
 
-      // New interactive sections (grey folders)
+      // PLAY ME FIRST - centered top
+      {
+        id: "playme",
+        name: "▶ PLAY ME FIRST",
+        type: "file",
+        x: window.innerWidth / 2 - 60,
+        y: 60,
+        content: <PlayMeWelcome />,
+      },
+      // Section folders - top right grid
       {
         id: "section1-record-room",
         name: "Section 1: Record Room",
         type: "folder",
-        x: 20,
-        y: 50,
+        x: window.innerWidth - 280,
+        y: 40,
         content: <SectionOneRecordRoom />,
       },
       {
         id: "section2-beat-builder",
         name: "Section 2: Beat Builder",
         type: "folder",
-        x: 20,
-        y: 180,
+        x: window.innerWidth - 130,
+        y: 40,
         content: <BeatBuilder />,
       },
       {
         id: "section3-slider",
         name: "Section 3: Slider",
         type: "folder",
-        x: 20,
-        y: 310,
+        x: window.innerWidth - 280,
+        y: 190,
         content: <ExchangeOrExploitation />,
       },
       {
         id: "section4-map-journey",
         name: "Section 4: Three Lives",
         type: "folder",
-        x: 20,
-        y: 570,
+        x: window.innerWidth - 130,
+        y: 190,
         content: <SectionFourMapJourney />,
+      },
+      {
+        id: "section5-video",
+        name: "Section 5: Video",
+        type: "folder",
+        x: window.innerWidth - 280,
+        y: 340,
+        content: <SectionFiveVideo />,
       },
       {
         id: "section6-kothbiro-case",
         name: "Section 6: Kothbiro",
         type: "folder",
-        x: 20,
-        y: 700,
+        x: window.innerWidth - 130,
+        y: 340,
         content: <SectionSixCaseFile />,
       },
       // System items
@@ -83,24 +102,6 @@ export default function Home() {
         x: 20,
         y: window.innerHeight - 150,
         content: <div className="p-4">Trash is empty.</div>,
-      },
-      {
-        id: "readme",
-        name: "Read Me",
-        type: "file",
-        x: 20,
-        y: 50,
-        content: (
-          <div className="p-6 max-w-2xl">
-            <h2 className="text-2xl font-bold mb-4">📚 Welcome to Kanye 2049</h2>
-            <p className="mb-4">An interactive exploration of Kanye West's global sampling practices.</p>
-            <div className="bg-gray-100 p-4 border-2 border-black">
-              <p className="font-bold mb-2">Navigation Guide:</p>
-              <p className="text-sm">Each folder on the right contains a source from my annotated bibliography. Double-click to explore different perspectives on sampling, cultural appropriation, and Kanye's place in global music culture.</p>
-            </div>
-            <p className="mt-4 text-xs italic">Note: This is temporary content. The full paper will be integrated soon.</p>
-          </div>
-        ),
       },
     ]);
   }, []);
@@ -121,6 +122,8 @@ export default function Home() {
         item.id === id ? { ...item, x, y } : item
       )
     );
+    // Log positions so we can see where you dragged them
+    console.log(`${id}: x=${x}, y=${y}`);
   };
 
   if (isBooting) {

@@ -98,6 +98,7 @@ export default function DesktopIcon({ item, onDoubleClick, onPositionChange }: D
       "section2-beat-builder": "#A78BFA",   // Purple (matches Beat Builder UI)
       "section3-slider": "#F472B6",         // Rose/Pink (matches Slider UI)
       "section4-map-journey": "#22D3EE",    // Cyan (matches Section 4 UI)
+      "section5-video": "#90EE90",          // Light Green (video section)
       "section6-kothbiro-case": "#8b7355",  // Brown/Tan (matches case file folder tab)
     };
     return colorMap[item.id] || "#f5f1e8";
@@ -118,7 +119,23 @@ export default function DesktopIcon({ item, onDoubleClick, onPositionChange }: D
             isSelected ? "bg-white bg-opacity-30 rounded" : ""
           }`}
         >
-          {item.id === "trash" ? (
+          {item.id === "playme" ? (
+            // Play button icon
+            <svg
+              width="64"
+              height="64"
+              viewBox="0 0 64 64"
+              className="drop-shadow-[2px_2px_0_rgba(0,0,0,0.3)]"
+            >
+              {/* Rounded rectangle background */}
+              <rect x="8" y="8" width="48" height="48" rx="8" fill="#FCC76A" stroke="black" strokeWidth="3"/>
+              {/* Play triangle */}
+              <path d="M26 20 L26 44 L44 32 Z" fill="white" stroke="black" strokeWidth="2"/>
+              {/* Pixelated details for vintage look */}
+              <rect x="12" y="12" width="4" height="4" fill="rgba(255,255,255,0.5)"/>
+              <rect x="48" y="48" width="4" height="4" fill="rgba(0,0,0,0.3)"/>
+            </svg>
+          ) : item.id === "trash" ? (
             // Trash bin icon
             <svg
               width="64"

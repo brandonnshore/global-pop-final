@@ -122,7 +122,6 @@ export default function MenuBar() {
       </div>
 
       <div className="flex items-center gap-4">
-        <span className="font-bold text-sm text-black">POTUS</span>
         <span className="font-bold text-sm text-black">
           {formatTime(currentTime)} - {formatDate(currentTime)}
         </span>
