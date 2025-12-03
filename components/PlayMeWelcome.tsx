@@ -95,7 +95,7 @@ export default function PlayMeWelcome() {
            }}>
         <h3 className="text-base font-bold text-black mb-3 tracking-wide">HOW TO NAVIGATE</h3>
         <p className="text-sm text-black leading-relaxed">
-          Double-click any folder icon on the desktop to explore different sections. Each section contains interactive elements, audio narration, and academic sources about Kanye&apos;s place in global music culture.
+          Double-click any folder icon on the desktop to explore different sections. Each section contains interactive elements, audio narration, and academic sources.
         </p>
       </div>
 
